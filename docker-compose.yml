@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  vikunja:
+    image: vikunja/vikunja:latest
+    env_file: stack.env
+    ports:
+      - ${VIKUNJA_PORT}:3456
+    volumes:
+      - files:/app/vikunja/files
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+  db:
+    image: mariadb:10
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    env_file: stack.env
+    volumes:
+      - db:/var/lib/mysql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u $$MYSQL_USER --password=$$MYSQL_PASSWORD"]
+      interval: 2s
+      start_period: 30s
+volumes:
+  files:
+  db:
