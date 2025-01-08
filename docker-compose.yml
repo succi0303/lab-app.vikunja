@@ -8,6 +8,7 @@ services:
       - ${VIKUNJA_PORT}:3456
     volumes:
       - files:/app/vikunja/files
+      - config/config.yml:/etc/vikunja/config.yml
     depends_on:
       db:
         condition: service_healthy
@@ -25,4 +26,5 @@ services:
       start_period: 30s
 volumes:
   files:
+  config:
   db:
