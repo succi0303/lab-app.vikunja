@@ -8,10 +8,6 @@ services:
       - ${VIKUNJA_PORT}:3456
     volumes:
       - files:/app/vikunja/files
-      - type: bind
-        source: ./config.yml
-        target: /etc/vikunja/config.yml
-        read_only: false
     depends_on:
       db:
         condition: service_healthy
